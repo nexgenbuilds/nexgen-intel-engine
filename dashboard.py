@@ -12,6 +12,15 @@ st.set_page_config(page_title="NexGen Intel Engine", layout="wide", page_icon="�
 st.title("⚡ NexGen Builds: Smart-Lead Gen Engine")
 st.markdown("Automated Lead Scoring and Outreach Generation Pipeline.")
 
+# --- THE SECURITY GATE ---
+st.sidebar.title("🔒 Engine Access")
+engine_password = st.sidebar.text_input("Enter Admin Password", type="password")
+
+# If the password is wrong, stop everything and don't load the rest of the app
+if engine_password != "NexGenSecure2026":
+    st.warning("Please enter the correct password in the sidebar to access the pipeline.")
+    st.stop()
+
 # --- THE MAGIC ONE-CLICK PIPELINE ---
 st.markdown("### ⚙️ Engine Control")
 if st.button("🚀 Run Full Intel Pipeline (Scrape ➔ Score ➔ Draft)", type="primary"):
