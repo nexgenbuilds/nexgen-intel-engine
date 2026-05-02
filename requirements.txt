@@ -1,0 +1,7 @@
+streamlit
+praw
+pandas
+python-dotenv
+vaderSentiment
+google-genai
+requests
