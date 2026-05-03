@@ -3,7 +3,8 @@ import pandas as pd
 import os
 import subprocess
 import time
-import sys # <-- We added this to track the exact Python path
+import sys
+from emailer import send_outreach_email
 
 # Set the page configuration
 st.set_page_config(page_title="NexGen Intel Engine", layout="wide", page_icon="⚡")
@@ -17,7 +18,7 @@ st.sidebar.title("🔒 Engine Access")
 engine_password = st.sidebar.text_input("Enter Admin Password", type="password")
 
 # If the password is wrong, stop everything and don't load the rest of the app
-if engine_password != "NexGenSecure2026":
+if engine_password != "NexGenSecure2026": 
     st.warning("Please enter the correct password in the sidebar to access the pipeline.")
     st.stop()
 
@@ -82,10 +83,24 @@ else:
                 
             with action_col:
                 st.markdown("**AI Drafted Outreach:**")
-                st.info(row['Draft_Message'])
+                # Using a text area so you can manually edit the AI draft before sending
+                final_draft = st.text_area("Edit Message:", value=row['Draft_Message'], height=150, key=f"draft_{index}")
+                
+                # Input field for the target's email address
+                target_email = st.text_input("Target Email Address:", placeholder="client@company.com", key=f"email_{index}")
                 
                 if st.button("🚀 Approve & Send", key=f"send_{index}"):
-                    st.success("Message Approved! (In production, this triggers the API).")
+                    if target_email:
+                        with st.spinner("Dispatching email..."):
+                            subject = f"Quick question regarding your post about {row['Post_Title'][:20]}..."
+                            success, message = send_outreach_email(target_email, subject, final_draft)
+                            
+                            if success:
+                                st.success(message)
+                            else:
+                                st.error(message)
+                    else:
+                        st.warning("Please enter a target email address first.")
 
     st.markdown("---")
     st.caption("NexGen Builds Proprietary Intel Engine v1.1")
