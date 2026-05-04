@@ -4,30 +4,25 @@ import os
 import subprocess
 import time
 import sys
+import re
 from emailer import send_outreach_email
 
-# Set the page configuration
 st.set_page_config(page_title="NexGen Intel Engine", layout="wide", page_icon="⚡")
 
-# Custom Title Header
 st.title("⚡ NexGen Builds: Smart-Lead Gen Engine")
 st.markdown("Automated Lead Scoring and Outreach Generation Pipeline.")
 
-# --- THE SECURITY GATE ---
 st.sidebar.title("🔒 Engine Access")
 engine_password = st.sidebar.text_input("Enter Admin Password", type="password")
 
-# If the password is wrong, stop everything and don't load the rest of the app
 if engine_password != "NexGenSecure2026": 
     st.warning("Please enter the correct password in the sidebar to access the pipeline.")
     st.stop()
 
-# --- THE MAGIC ONE-CLICK PIPELINE ---
 st.markdown("### ⚙️ Engine Control")
 if st.button("🚀 Run Full Intel Pipeline (Scrape ➔ Score ➔ Draft)", type="primary"):
     with st.status("Executing NexGen Pipeline...", expanded=True) as status:
         try:
-            # sys.executable forces it to use the (venv) Python!
             st.write("🕵️‍♂️ Scraping Hacker News for high-intent leads...")
             subprocess.run([sys.executable, "scraper.py"], check=True)
             
@@ -47,7 +42,6 @@ if st.button("🚀 Run Full Intel Pipeline (Scrape ➔ Score ➔ Draft)", type="
 
 st.markdown("---")
 
-# --- DATA LOADING AND DISPLAY ---
 def load_data():
     file_path = 'final_actionable_leads.csv'
     if os.path.exists(file_path):
@@ -67,10 +61,9 @@ else:
         top_score = df['Lead_Score'].max()
         st.metric(label="Hottest Lead Score", value=f"{top_score}/100")
     with col3:
-        st.metric(label="Platform Active", value="Hacker News (MVP)")
+        st.metric(label="Platform Active", value="Omni-Channel")
 
     st.markdown("---")
-    
     st.subheader("🔥 Actionable Pipeline")
     
     for index, row in df.iterrows():
@@ -78,21 +71,26 @@ else:
             info_col, action_col = st.columns([1, 1])
             
             with info_col:
-                st.markdown("**Author:** " + str(row['Author']))
+                # BUG FIX: Intercept the literal string "Unknown" from the CSV
+                author_val = str(row['Author']).strip()
+                display_author = "LinkedIn User" if author_val == "Unknown" or author_val == "nan" else author_val
+                
+                st.markdown(f"**Author:** {display_author}")
                 st.markdown(f"**Source Link:** [View Original Post]({row['URL']})")
                 
             with action_col:
                 st.markdown("**AI Drafted Outreach:**")
-                # Using a text area so you can manually edit the AI draft before sending
-                final_draft = st.text_area("Edit Message:", value=row['Draft_Message'], height=150, key=f"draft_{index}")
                 
-                # Input field for the target's email address
-                target_email = st.text_input("Target Email Address:", placeholder="client@company.com", key=f"email_{index}")
+                safe_title_key = re.sub(r'\W+', '', str(row['Post_Title']))[:15]
+                unique_key = f"draft_{index}_{safe_title_key}"
                 
-                if st.button("🚀 Approve & Send", key=f"send_{index}"):
+                final_draft = st.text_area("Edit Message:", value=row['Draft_Message'], height=150, key=unique_key)
+                target_email = st.text_input("Target Email Address:", placeholder="client@company.com", key=f"email_{unique_key}")
+                
+                if st.button("🚀 Approve & Send", key=f"send_{unique_key}"):
                     if target_email:
                         with st.spinner("Dispatching email..."):
-                            subject = f"Quick question regarding your post about {row['Post_Title'][:20]}..."
+                            subject = f"Quick question regarding your post about {str(row['Post_Title'])[:20]}..."
                             success, message = send_outreach_email(target_email, subject, final_draft)
                             
                             if success:
@@ -103,4 +101,4 @@ else:
                         st.warning("Please enter a target email address first.")
 
     st.markdown("---")
-    st.caption("NexGen Builds Proprietary Intel Engine v1.1")
+    st.caption("NexGen Builds Proprietary Intel Engine v1.2")

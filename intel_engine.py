@@ -1,60 +1,67 @@
 import pandas as pd
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import os
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-class LeadScorer:
-    def __init__(self):
-        print("[*] Initializing VADER Sentiment NLP...")
-        self.analyzer = SentimentIntensityAnalyzer()
+print("[*] Initializing VADER Sentiment NLP...")
+analyzer = SentimentIntensityAnalyzer()
 
-    def calculate_score(self, text):
-        # Handle empty text safely
-        if not isinstance(text, str):
-            return 50  # Base score for just matching our keywords
+# 1. Load Data from ALL Sources
+df_list = []
 
-        # Analyze the text
-        sentiment = self.analyzer.polarity_scores(text)
-        
-        # We want to measure "Pain" or "Frustration" (Negative sentiment)
-        # VADER 'neg' score is between 0.0 and 1.0
-        pain_intensity = sentiment['neg']
-        
-        # Calculate Lead Score (Out of 100)
-        # Base score is 50 because they already matched our intent keywords in Phase 1
-        # We add up to 50 more points based on how frustrated they sound
-        lead_score = 50 + (pain_intensity * 50)
-        
-        return round(lead_score, 1)
+hn_file = 'raw_leads_mvp.csv'
+if os.path.exists(hn_file):
+    print(f"[*] Loading Hacker News leads from {hn_file}...")
+    df_list.append(pd.read_csv(hn_file))
 
-    def process_leads(self, input_csv, output_csv):
-        if not os.path.exists(input_csv):
-            print(f"[!] Error: Could not find {input_csv}. Run scraper.py first.")
-            return
+li_file = 'linkedin_raw_leads.csv'
+if os.path.exists(li_file):
+    print(f"[*] Loading LinkedIn leads from {li_file}...")
+    df_list.append(pd.read_csv(li_file))
 
-        print(f"[*] Loading raw leads from {input_csv}...")
-        df = pd.read_csv(input_csv)
+if not df_list:
+    print("[-] No raw leads found. Run a scraper (scraper.py or linkedin_adapter.py) first.")
+    exit()
 
-        print("[*] Running sentiment analysis and calculating Lead Scores...")
-        # Apply the scoring formula to the Post Title 
-        # (For Hacker News, the title usually contains the main pain point)
-        df['Lead_Score'] = df['Post_Title'].apply(self.calculate_score)
+# Combine all leads into one master dataframe
+df = pd.concat(df_list, ignore_index=True)
+print(f"[*] Merged a total of {len(df)} leads for scoring...")
 
-        # Sort the leads so the most desperate/highest score is at the top
-        df = df.sort_values(by='Lead_Score', ascending=False)
+# 2. Score the Leads
+scores = []
+for index, row in df.iterrows():
+    # Safely get text, handling NaN values
+    title = str(row.get('Post_Title', ''))
+    body = str(row.get('Post_Body', ''))
+    text_to_analyze = title + " " + body
+    
+    sentiment_dict = analyzer.polarity_scores(text_to_analyze)
+    
+    # Core logic: Base score (50) + Frustration/Pain points
+    base_score = 50 
+    frustration_bonus = sentiment_dict['neg'] * 50 
+    
+    # 🌟 The B2B Multiplier: Give LinkedIn leads a priority bump
+    platform_bump = 10 if row.get('Platform') == 'LinkedIn' else 0
+    
+    final_score = round(base_score + frustration_bonus + platform_bump, 1)
+    
+    # Cap the maximum score at 100
+    final_score = min(final_score, 100.0)
+    scores.append(final_score)
 
-        # Save the upgraded data
-        df.to_csv(output_csv, index=False)
-        print(f"[+] SUCCESS: Scored {len(df)} leads.")
-        print(f"[+] Ranked data saved to {output_csv}\n")
+df['Lead_Score'] = scores
 
-        # Display the hottest lead
-        top_lead = df.iloc[0]
-        print("=== 🔥 HOTTEST LEAD 🔥 ===")
-        print(f"Score: {top_lead['Lead_Score']}/100")
-        print(f"Title: {top_lead['Post_Title']}")
-        print(f"Link:  {top_lead['URL']}")
-        print("===========================")
+# 3. Sort and Save
+df = df.sort_values(by='Lead_Score', ascending=False)
+df.to_csv('scored_leads_mvp.csv', index=False)
 
-if __name__ == "__main__":
-    scorer = LeadScorer()
-    scorer.process_leads(input_csv='raw_leads_mvp.csv', output_csv='scored_leads_mvp.csv')
+print(f"[+] SUCCESS: Scored {len(df)} leads across multiple platforms.")
+print("[+] Master ranked data saved to scored_leads_mvp.csv")
+
+if not df.empty:
+    top_lead = df.iloc[0]
+    print("\n=== 🔥 HOTTEST LEAD 🔥 ===")
+    print(f"Platform: {top_lead.get('Platform', 'Unknown')}")
+    print(f"Score: {top_lead['Lead_Score']}/100")
+    print(f"Title: {top_lead['Post_Title'][:50]}...")
+    print("===========================\n")

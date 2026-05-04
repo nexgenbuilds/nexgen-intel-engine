@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from datetime import datetime
+import os # Added to check if the vault file exists
 
 class HackerNewsScraper:
     def __init__(self):
@@ -54,8 +55,20 @@ if __name__ == "__main__":
     df_leads = hn_engine.fetch_leads(keywords=target_keywords, limit=50)
 
     if not df_leads.empty:
-        df_leads.to_csv('raw_leads_mvp.csv', index=False)
+        # 1. Save DAILY file (Overwrites every time for the Streamlit dashboard)
+        df_leads.to_csv('raw_leads_mvp.csv', index=False, encoding='utf-8-sig')
+        
+        # 2. Save HISTORICAL VAULT file (Appends data forever)
+        vault_file = 'hacker_news_master_vault.csv'
+        if os.path.exists(vault_file):
+            # Append if the file already exists
+            df_leads.to_csv(vault_file, mode='a', header=False, index=False, encoding='utf-8-sig')
+        else:
+            # Create the file with headers if it's the first run
+            df_leads.to_csv(vault_file, index=False, encoding='utf-8-sig')
+            
         print(f"Success! Found {len(df_leads)} potential leads.")
-        print("Saved everything to raw_leads_mvp.csv")
+        print("[+] Daily dashboard queue updated (raw_leads_mvp.csv).")
+        print("[+] Historical master vault updated (hacker_news_master_vault.csv).")
     else:
         print("No leads found in the latest posts right now. Try again in a bit!")

@@ -1,0 +1,270 @@
+﻿Platform,Author,Post_Title,Post_Body,URL,Timestamp
+LinkedIn,Unknown,Seeking a AI Automation Expert for Real Estate Tech Project 🚀  I’m looking for a...,"Seeking a AI Automation Expert for Real Estate Tech Project 🚀
+
+I’m looking for a technical automation specialist to help me build a fully autonomous data scraper on Zillow. I’ve mapped out the workflow, but I need an expert to execute the ""glue"" that connects our tech stack. Apify experience is a must. 
+
+The Tech Stack:
+Apify: Daily scraping of Zillow data.
+Make.com: The central brain for routing and logic the data.
+Google AI Studio: Lead classification and sorting.
+Google Workspace: For database management and outbound routing.
+
+Engineers, Consultants, Claude Expert Implementors, and Techies, let me know!",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,Most small businesses are sitting on gold — and don't even know it.  That gold? ...,"Most small businesses are sitting on gold — and don't even know it.
+
+That gold? Their data.
+
+Here are 3 things your data should be doing for you RIGHT NOW:
+
+1️⃣ Showing you exactly which products/services make you the most money
+2️⃣ Flagging problems before they become expensive mistakes
+3️⃣ Saving your team hours of manual reporting every week
+
+If your data isn't doing these 3 things — you don't have a data problem.
+
+You have a system problem.
+
+And that's fixable.
+
+📩 DM me. Let's turn your scattered data into a system that actually works for you.
+
+
+hashtag
+#DataAnalytics 
+hashtag
+#SmallBusiness 
+hashtag
+#Dashboard 
+hashtag
+#ExcelExpert 
+hashtag
+#BusinessGrowth 
+hashtag
+#FreelanceAnalyst",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,"🚨 No dataset? No problem.  In Machine Learning, the real work starts with data c...","🚨 No dataset? No problem.
+
+In Machine Learning, the real work starts with data collection and not all data comes from Kaggle or UCI.
+
+So I learned how to build my own dataset from the web using Web Scraping.
+Here’s what I worked on:
+
+Web scraping with Python
+Pagination handling (multiple pages)
+Data cleaning and extraction
+Converting data into structured DataFrames
+Exporting data to CSV
+
+🛠 Tools used: requests, BeautifulSoup, pandas libraries
+
+Key methods I learned:
+
+requests:
+requests.get() → fetch webpage
+response.status_code → check request success
+response.text → get HTML content
+headers (User-Agent) → avoid blocking
+
+BeautifulSoup:
+BeautifulSoup(html, ""html.parser"") → parse HTML
+find() → extract single element
+find_all() → extract multiple elements
+.text → get visible text
+tag navigation (e.g., book.h3.a[""title""]) → extract attributes
+
+Now I don’t just use datasets I can create them from scratch.
+That’s a real ML mindset shift.
+
+
+hashtag
+#Python 
+hashtag
+#WebScraping 
+hashtag
+#BeautifulSoup 
+hashtag
+#Requests 
+hashtag
+#MachineLearning 
+hashtag
+#MLDLC 
+hashtag
+#DataScience 
+hashtag
+#LearningInPublic",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,💻 Professional web scraping using Python to extract accurate and structured data...,"💻 Professional web scraping using Python to extract accurate and structured data from any website—fast, reliable, and scalable.
+
+
+ 
+ https://lnkd.in/dJ8KJAMc",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,Most of the data we work with isn’t clean spreadsheets it’s hidden inside web pa...,"Most of the data we work with isn’t clean spreadsheets it’s hidden inside web pages.
+
+So I tried pulling it out myself.
+I scraped a Wikipedia table of the Top 100 publicly traded companies using BeautifulSoup + Pandas and turned raw HTML into a structured dataset.
+
+• Extracted and structured ~100 rows across 7 key features (revenue, growth, employees, etc.)
+• Converted messy web data into an analysis-ready DataFrame to CSV
+• Understood how critical data collection & cleaning is before any real analysis begins
+
+This wasn’t just scraping, it changed how I see data.
+Before dashboards and models, there’s always this step.
+
+
+hashtag
+#DataAnalytics 
+hashtag
+#WebScraping 
+hashtag
+#Python 
+hashtag
+#Pandas 
+hashtag
+#LearningJourney",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,"Recently, a client sent me a list of restaurants and a set of criteria.  The gui...","Recently, a client sent me a list of restaurants and a set of criteria.
+
+The guideline was clear: go through each one, find the information she needed, and organize everything into a structured spreadsheet.
+
+Straightforward on paper. But with over 200 entries, the real work is in the consistency, making sure every row is treated the same way, every gap is handled the same way, from the first entry to the last.
+
+The client got a clean and ready-to-use file. I don't always know what clients do with the data after that. That's fine, my job ends when they can open the file and get straight to work.
+
+That's what I do.
+
+If you have data that needs collecting or organizing, let's talk.
+
+What's the most tedious data task you've had to deal with lately?
+
+
+hashtag
+#DataEntry 
+hashtag
+#DataCollection 
+hashtag
+#Freelance 
+hashtag
+#RemoteWork",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,Quick question:  Is your data actually helping you make money?  Or just sitting ...,"Quick question:
+
+Is your data actually helping you make money?
+
+Or just sitting in dashboards?
+
+I work with businesses that:
+– Have data but don’t trust it
+– Struggle with slow reporting
+– Can’t scale analytics
+
+Using platforms like Databricks, we turn that into:
+
+→ Clean, reliable data
+→ Real-time insights
+→ Predictive models
+
+So decisions become faster and smarter.
+
+If you want to:
+✔ Improve data pipelines
+✔ Build scalable analytics
+✔ Use AI on your data
+
+Let’s connect.
+
+
+
+hashtag
+#LeadGeneration 
+hashtag
+#Databricks 
+hashtag
+#DataConsulting 
+hashtag
+#AI 
+hashtag
+#MachineLearning 
+hashtag
+#BusinessGrowth 
+hashtag
+#Analytics 
+hashtag
+#DataStrategy 
+hashtag
+#DigitalTransformation 
+hashtag
+#Consulting",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,"When you work on web scraping at scale, getting the data is only half the job. T...","When you work on web scraping at scale, getting the data is only half the job. The real challenge is making sure the data is accurate, complete, and reliable.
+
+For every scraping project, I recommend having a strong data QA process in place. This becomes even more important when you are collecting large volumes of data regularly and your team depends on that data for decisions.
+
+Here is a simple way to validate scraped data quality:
+1.     Check the expected schema first
+ Make sure the number of rows and columns looks right before going deeper.
+
+2.     Review missing values
+ Look for empty cells or unexpected gaps in important columns.
+
+3.     Use basic text statistics
+ When extracting text, check length, min, max, mean, and other patterns to catch unusual results.
+
+4.     Keep a reference for verification
+ Save the source URL, image name, PDF page number, or row number so you can randomly sample and compare the scraped data with the original source.
+
+5.     Log errors clearly
+ If something fails, write it into a log file and mark the cell with values like “Failed” or “Error” so you can review it later.
+
+6.     Use Pydantic for validation
+ It helps enforce structure and catch bad data early.
+
+The best part is that after this process, you do not need to scrape everything again. You can re-scrape only the failed records instead of the full dataset.
+
+These are some of the methods I use, and I would love to hear what others are doing as well.
+
+
+hashtag
+#WebScraping 
+hashtag
+#DataQuality 
+hashtag
+#DataValidation 
+hashtag
+#Python 
+hashtag
+#DataEngineering 
+hashtag
+#ETL 
+hashtag
+#DataScraping",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28
+LinkedIn,Unknown,Most businesses don’t struggle with finding data.  They struggle with finding th...,"Most businesses don’t struggle with finding data.
+ They struggle with finding the right leads.
+Random lists don’t convert.
+ Unstructured data wastes time.
+I’ve been working on Python based scraping and automation to:
+Extract targeted leads from websites and directories
+Clean and structure messy data
+Deliver ready-to-use lead lists
+Still learning, but focused on solving real business problems.
+If you’re working with manual lead collection or low-quality data, there’s a better way.
+
+
+hashtag
+#webscraping 
+hashtag
+#leadgeneration 
+hashtag
+#dataextraction 
+hashtag
+#pythonautomation 
+hashtag
+#businessautomation 
+hashtag
+#datascraping 
+hashtag
+#leadscraping 
+hashtag
+#datacollection 
+hashtag
+#freelancer 
+hashtag
+#onlineleads 
+hashtag
+#b2bleads 
+hashtag
+#automationservices",https://www.linkedin.com/search/results/content/?keywords=need help data scraping&origin=GLOBAL_SEARCH_HEADER,2026-05-04 22:54:28

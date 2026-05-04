@@ -1,38 +1,46 @@
 import pandas as pd
 from google import genai
 import os
+import time
 from dotenv import load_dotenv
 
-# load the keys from the .env file
 load_dotenv()
-
-# set up the new official gemini client
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-def draft_outreach(post_title):
-    # strict prompt to prevent the AI from sounding like a salesman
+def draft_outreach(post_title, post_body="", retries=3):
     prompt = f"""
-    You are a friendly computer science student and developer browsing Hacker News. 
-    You just saw a post with this title: "{post_title}"
+    You are the Founder and Lead Developer of NexGen Builds, a technical data science and automation agency. 
+    You are browsing social media for leads and saw a post from a potential client.
+    
+    Title: "{post_title}"
+    Body: "{post_body}"
     
     Write a short, casual direct message (2 to 3 sentences maximum) to the author.
     
     Rules:
-    - Do NOT sell anything.
-    - Do NOT use corporate jargon or buzzwords.
-    - Sound like a student just reaching out to chat or offer a free tip.
-    - Mention their specific project naturally.
+    - Position yourself as a professional automation expert/founder. Do NOT mention being a student.
+    - Do NOT sell anything aggressively; focus on starting a conversation.
+    - Acknowledge their specific problem or project naturally.
+    - Offer a quick observation or mention that your agency builds custom data pipelines that solve this exact issue.
+    - Keep the tone highly professional but approachable.
     """
     
-    try:
-        # using the newest flash model for speed and reliability
-        response = client.models.generate_content(
-            model='gemini-2.5-flash', 
-            contents=prompt
-        )
-        return response.text.strip()
-    except Exception as e:
-        return f"Error generating draft: {e}"
+    # Retry logic: Try up to 3 times if the server is busy
+    for attempt in range(retries):
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.5-flash', 
+                contents=prompt
+            )
+            return response.text.strip()
+        except Exception as e:
+            if "503" in str(e) or "429" in str(e):
+                print(f"[*] Gemini API busy (Attempt {attempt+1}/{retries}). Waiting 3 seconds...")
+                time.sleep(3)
+            else:
+                return f"Error generating draft: {e}"
+                
+    return "Error: AI generation failed after multiple attempts. The server is overloaded right now."
 
 def generate_drafts(input_csv, output_csv):
     if not os.path.exists(input_csv):
@@ -41,21 +49,22 @@ def generate_drafts(input_csv, output_csv):
         
     print(f"Loading scored leads from {input_csv}...")
     df = pd.read_csv(input_csv)
-    
-    # just taking the top 3 leads to save api tokens during testing
     top_leads = df.head(3).copy()
     
-    print("Writing personalized outreach messages via Gemini...")
+    print("Writing professional agency outreach messages via Gemini...")
     
-    # apply the drafting function to the top titles
-    top_leads['Draft_Message'] = top_leads['Post_Title'].apply(draft_outreach)
-    
-    # save the final results
+    drafts = []
+    for index, row in top_leads.iterrows():
+        print(f"[*] Drafting message for lead {index + 1}...")
+        draft = draft_outreach(row['Post_Title'], str(row.get('Post_Body', '')))
+        drafts.append(draft)
+        # Give the API a 2-second breather between each request
+        time.sleep(2) 
+        
+    top_leads['Draft_Message'] = drafts
     top_leads.to_csv(output_csv, index=False)
     
     print("\n=== AI DRAFTING COMPLETE ===")
-    
-    # show off the number one result
     best_lead = top_leads.iloc[0]
     print(f"\nLead Title: {best_lead['Post_Title']}")
     print(f"Drafted Message:\n{best_lead['Draft_Message']}")
