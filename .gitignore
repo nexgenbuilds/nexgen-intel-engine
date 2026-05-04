@@ -3,3 +3,5 @@ venv/
 __pycache__/
 *.csv
 linkedin_profile_data/
+linkedin_master_vault.csv
+hacker_news_master_vault.csv
