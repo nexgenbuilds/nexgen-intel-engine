@@ -35,8 +35,8 @@ def draft_outreach(post_title, post_body="", retries=3):
             return response.text.strip()
         except Exception as e:
             if "503" in str(e) or "429" in str(e):
-                print(f"[*] Gemini API busy (Attempt {attempt+1}/{retries}). Waiting 3 seconds...")
-                time.sleep(3)
+                print(f"[*] Gemini API busy (Attempt {attempt+1}/{retries}). Waiting 6 seconds...")
+                time.sleep(6) # Increased to 6 seconds
             else:
                 return f"Error generating draft: {e}"
                 
@@ -58,8 +58,10 @@ def generate_drafts(input_csv, output_csv):
         print(f"[*] Drafting message for lead {index + 1}...")
         draft = draft_outreach(row['Post_Title'], str(row.get('Post_Body', '')))
         drafts.append(draft)
-        # Give the API a 2-second breather between each request
-        time.sleep(2) 
+        
+        # Give the API an 8-second breather to avoid free-tier rate limits
+        print("[*] Sleeping for 8 seconds to respect API limits...")
+        time.sleep(8)
         
     top_leads['Draft_Message'] = drafts
     top_leads.to_csv(output_csv, index=False)
