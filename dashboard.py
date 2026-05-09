@@ -5,7 +5,10 @@ import subprocess
 import time
 import sys
 import re
+from dotenv import load_dotenv
 from emailer import send_outreach_email
+
+load_dotenv()
 
 st.set_page_config(page_title="NexGen Intel Engine", layout="wide", page_icon="⚡")
 
@@ -15,7 +18,10 @@ st.markdown("Automated Lead Scoring and Outreach Generation Pipeline.")
 st.sidebar.title("🔒 Engine Access")
 engine_password = st.sidebar.text_input("Enter Admin Password", type="password")
 
-if engine_password != "NexGen2026": 
+# SECURITY FIX
+CORRECT_PASSWORD = os.getenv("APP_PASSWORD")
+
+if engine_password != CORRECT_PASSWORD: 
     st.warning("Please enter the correct password in the sidebar to access the pipeline.")
     st.stop()
 
@@ -71,7 +77,6 @@ else:
             info_col, action_col = st.columns([1, 1])
             
             with info_col:
-                # BUG FIX: Intercept the literal string "Unknown" from the CSV
                 author_val = str(row['Author']).strip()
                 display_author = "LinkedIn User" if author_val == "Unknown" or author_val == "nan" else author_val
                 
