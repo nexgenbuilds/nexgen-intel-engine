@@ -15,7 +15,7 @@ st.markdown("Automated Lead Scoring and Outreach Generation Pipeline.")
 st.sidebar.title("🔒 Engine Access")
 engine_password = st.sidebar.text_input("Enter Admin Password", type="password")
 
-if engine_password != "NexGenSecure2026": 
+if engine_password != "NexGen2026": 
     st.warning("Please enter the correct password in the sidebar to access the pipeline.")
     st.stop()
 
